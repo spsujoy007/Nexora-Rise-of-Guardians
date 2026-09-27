@@ -3,31 +3,58 @@ import { useGuardianStore } from "@/store/useGuardianStore";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { app } from "../firebaseConfig";
+import { auth } from "@/lib/firebase";
 import {
-    getAuth,
     GoogleAuthProvider,
+    getRedirectResult,
     onAuthStateChanged,
     signInWithPopup,
+    signInWithRedirect,
     type User,
 } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
 
-const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-export default function useGoogleAuth(options?: { onSuccess?: (user: any) => void }) {
+export default function useGoogleAuth(options?: { onSuccess?: (user: User) => void }) {
     const navigate = useNavigate();
 
     const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(Boolean(auth));
+    const [error, setError] = useState<string | null>(null);
 
     const login = useGuardianStore((state) => state.login);
 
     // Restore Firebase user after page reload
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        if (!auth) {
+            setLoading(false);
+            return;
+        }
+
+        const firebaseAuth = auth;
+        let mounted = true;
+        const restoreRedirectUser = async () => {
+            try {
+                const result = await getRedirectResult(firebaseAuth);
+                if (result?.user && mounted) {
+                    setUser(result.user);
+                    if (options?.onSuccess) {
+                        options.onSuccess(result.user);
+                    } else {
+                        login();
+                        navigate("/dashboard");
+                    }
+                }
+            } catch (redirectError) {
+                console.error("Google redirect login error:", redirectError);
+                if (mounted) setError("Google sign-in could not be completed. Check your Firebase authorized domains.");
+            }
+        };
+
+        restoreRedirectUser();
+        const unsubscribe = onAuthStateChanged(firebaseAuth, (firebaseUser) => {
             if (firebaseUser) {
                 setUser(firebaseUser);
                 login();
@@ -37,17 +64,23 @@ export default function useGoogleAuth(options?: { onSuccess?: (user: any) => voi
             setLoading(false);
         });
 
-        return () => unsubscribe();
-    }, [login]);
+        return () => {
+            mounted = false;
+            unsubscribe();
+        };
+    }, [login, navigate, options]);
 
     const handleGoogleLogin = async () => {
+        if (!auth) {
+            setError("Google sign-in is not configured. Add the Firebase variables in Vercel settings.");
+            return;
+        }
+
         try {
             setLoading(true);
+            setError(null);
 
-            const result = await signInWithPopup(
-                auth,
-                googleProvider
-            );
+            const result = await signInWithPopup(auth, googleProvider);
 
             const googleUser = result.user;
 
@@ -60,7 +93,15 @@ export default function useGoogleAuth(options?: { onSuccess?: (user: any) => voi
                 navigate("/dashboard");
             }
         } catch (error) {
+            const code = (error as { code?: string }).code;
             console.error("Google Login Error:", error);
+
+            if (code === "auth/popup-blocked" || code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+                await signInWithRedirect(auth, googleProvider);
+                return;
+            }
+
+            setError("Google sign-in failed. Confirm this Vercel domain is listed in Firebase authorized domains.");
         } finally {
             setLoading(false);
         }
@@ -106,6 +147,7 @@ export default function useGoogleAuth(options?: { onSuccess?: (user: any) => voi
     return {
         user,
         loading,
+        error,
         handleGoogleLogin,
         GoogleAuthButton,
     };

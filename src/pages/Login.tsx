@@ -21,7 +21,7 @@ export function Login() {
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_SEEDS[0])
   const [uid, setUid] = useState<string | null>(null)
 
-  const {GoogleAuthButton, user} = useGoogleAuth({ onSuccess: (user) => { setUid(user.uid); setStep('avatar'); } })
+  const { GoogleAuthButton, user, error } = useGoogleAuth({ onSuccess: (user) => { setUid(user.uid); setStep('avatar'); } })
 
   async function finishSetup() {
     const finalAvatar = selectedAvatar === 'google' && user?.photoURL ? user.photoURL : avatarUrl(selectedAvatar)
@@ -56,6 +56,8 @@ export function Login() {
                 </div>
                 
                 <GoogleAuthButton></GoogleAuthButton>
+
+                {error && <p className="text-xs text-danger text-center">{error}</p>}
 
                 <p className="text-[11px] text-mist text-center">
                   {isFirebaseConfigured

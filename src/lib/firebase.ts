@@ -13,12 +13,12 @@ import { getFirestore, type Firestore } from 'firebase/firestore'
 // ============================================================
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || import.meta.env.VITE_GOOGLE_AUTH_apiKey,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || import.meta.env.VITE_GOOGLE_AUTH_authDomain,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || import.meta.env.VITE_GOOGLE_AUTH_projectId,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || import.meta.env.VITE_GOOGLE_AUTH_storageBucket,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || import.meta.env.VITE_GOOGLE_AUTH_messagingSenderId,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || import.meta.env.VITE_GOOGLE_AUTH_appId,
 }
 
 export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId)
