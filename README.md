@@ -95,47 +95,6 @@ npm.cmd run dev
 
 ## Environment Configuration
 
-Create a `.env` file in this `frontend` directory. Vite exposes only variables prefixed with `VITE_` to browser code. Do not put private server secrets in this file.
-
-### Optional service variables
-
-| Variable | Used for | Required in mock mode |
-| --- | --- | --- |
-| `VITE_GOOGLE_AUTH_apiKey` | Firebase config used by the current Google auth hook | No |
-| `VITE_GOOGLE_AUTH_authDomain` | Firebase authentication domain | No |
-| `VITE_GOOGLE_AUTH_projectId` | Firebase project ID for authentication | No |
-| `VITE_GOOGLE_AUTH_storageBucket` | Firebase storage bucket config | No |
-| `VITE_GOOGLE_AUTH_messagingSenderId` | Firebase messaging sender config | No |
-| `VITE_GOOGLE_AUTH_appId` | Firebase application ID | No |
-| `VITE_FIREBASE_API_KEY` | Firebase data-service configuration | No |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase data-service auth domain | No |
-| `VITE_FIREBASE_PROJECT_ID` | Enables Firestore-backed data mode with the other Firebase values | No |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket config | No |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender config | No |
-| `VITE_FIREBASE_APP_ID` | Firebase application ID | No |
-| `VITE_GEMINI_API_KEY` | Live Google Gemini report analysis | No |
-| `VITE_GOOGLE_MAPS_API_KEY` | Live Google Maps incident map | No |
-| `VITE_CLOUDINARY_CLOUD_NAME` | Cloudinary report media uploads | No |
-| `VITE_CLOUDINARY_UPLOAD_PRESET` | Unsigned Cloudinary upload preset | No |
-| `VITE_API_BASE_URL` | Reserved API base URL setting | No |
-
-For a fully live Firebase flow, configure the auth and data-service Firebase values for the same Firebase project, enable Google sign-in, and create the required Firestore collections and rules. The frontend intentionally falls back to mock data when a service is not configured.
-
-## Application Routes
-
-| Path | Access | Purpose |
-| --- | --- | --- |
-| `/` | Public | Landing page |
-| `/login` | Public | Guardian sign-in |
-| `/signup` | Public | Guardian onboarding |
-| `/dashboard` | Protected | Guardian overview and city health |
-| `/report` | Protected | Create and analyze an incident report |
-| `/missions` | Protected | Daily, weekly, and monthly missions |
-| `/leaderboard` | Protected | Guardian rankings |
-| `/community` | Protected | Community incident feed |
-| `/profile` | Protected | Guardian profile, achievements, and activity |
-| `/municipal` | Protected | Municipal incident monitoring dashboard |
-
 ## Project Structure
 
 ```text
