@@ -26,6 +26,7 @@ export function Login() {
     setSubmitting(true)
     const finalAvatar = selectedAvatar === 'google' && user?.photoURL ? user.photoURL : avatarUrl(selectedAvatar)
     const authenticatedUid = uid ?? user?.uid
+    localStorage.setItem('nexora-selected-avatar', finalAvatar)
 
     if (isFirebaseConfigured && authenticatedUid) {
       loginWithFirebase(authenticatedUid)

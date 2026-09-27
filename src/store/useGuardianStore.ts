@@ -22,6 +22,7 @@ import type { Unsubscribe } from 'firebase/firestore'
 // without putting non-serializable function refs into Zustand state.
 let unsubGuardian: Unsubscribe | null = null
 let unsubReports: Unsubscribe | null = null
+const savedAvatar = typeof window !== 'undefined' ? localStorage.getItem('nexora-selected-avatar') : null
 
 interface GuardianStore {
   guardian: Guardian
@@ -50,7 +51,7 @@ interface GuardianStore {
 }
 
 export const useGuardianStore = create<GuardianStore>((set, get) => ({
-  guardian: CURRENT_GUARDIAN,
+  guardian: savedAvatar ? { ...CURRENT_GUARDIAN, avatar: savedAvatar } : CURRENT_GUARDIAN,
   reports: RECENT_REPORTS,
   dailyMissions: DAILY_MISSIONS,
   weeklyMissions: WEEKLY_MISSIONS,
