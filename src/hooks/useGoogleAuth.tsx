@@ -101,7 +101,17 @@ export default function useGoogleAuth(options?: { onSuccess?: (user: User) => vo
                 return;
             }
 
-            setError("Google sign-in failed. Confirm this Vercel domain is listed in Firebase authorized domains.");
+            if (code === "auth/unauthorized-domain") {
+                setError(`Firebase rejected ${window.location.hostname}. Add this domain under Authentication > Settings > Authorized domains.`);
+            } else if (code === "auth/operation-not-allowed") {
+                setError("Google sign-in is disabled. Enable Google under Firebase Authentication > Sign-in method.");
+            } else if (code === "auth/invalid-api-key" || code === "auth/api-key-not-valid") {
+                setError("Firebase rejected the API key. Check the Firebase environment variables configured in Vercel.");
+            } else if (code === "auth/network-request-failed") {
+                setError("Google sign-in could not reach Firebase. Check the deployed site's network connection and Firebase configuration.");
+            } else {
+                setError(`Google sign-in failed${code ? ` (${code})` : ""}. Check the Firebase configuration and authorized domains.`);
+            }
         } finally {
             setLoading(false);
         }
