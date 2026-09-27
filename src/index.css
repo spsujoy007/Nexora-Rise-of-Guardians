@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ---- Indian Gov palette ---- */
+  --color-void: #FFFFFF;
+  --color-surface: #F8F9FA;
+  --color-surface-2: #E9ECEF;
+  --color-line: #DEE2E6;
+
+  --color-guardian-blue: #000080; /* Navy Blue */
+  --color-guardian-blue-dim: #000050;
+  --color-neon: #FF9933; /* Saffron */
+  --color-neon-dim: #D97722;
+  --color-amber: #138808; /* India Green */
+  --color-danger: #DC3545;
+
+  --color-ice: #212529; /* Dark text */
+  --color-mist: #6C757D; /* Muted text */
+
+  --font-display: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: monospace;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html, body {
+  background: var(--color-void);
+  color: var(--color-ice);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-image: none;
+  background-attachment: fixed;
+}
+
+/* Texture overlay - simplified for gov site */
+.hud-grid {
+  background-image: none;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-mist); }
+
+.font-display { font-family: var(--font-display); font-weight: 700; }
+.font-mono { font-family: var(--font-mono); }
+
+/* Standard panels instead of glassmorphism */
+.glass {
+  background: #FFFFFF;
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.glass-strong {
+  background: #F8F9FA;
+  border: 1px solid var(--color-line);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-top: 3px solid var(--color-neon); /* Saffron top border accent */
+}
+
+.text-gradient {
+  background: none;
+  color: var(--color-guardian-blue);
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+
+.glow-blue { box-shadow: 0 0 0 1px rgba(0,0,128,0.15), 0 0 10px rgba(0,0,128,0.1); }
+.glow-neon { box-shadow: 0 0 0 1px rgba(255,153,51,0.15), 0 0 10px rgba(255,153,51,0.1); }
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  70% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid var(--color-amber);
+  animation: pulse-ring 2.2s cubic-bezier(0.4,0,0.6,1) infinite;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+.float { animation: float-y 5s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s infinite;
+}
+
+.clip-hex {
+  clip-path: none;
+  border-radius: 4px;
+}
