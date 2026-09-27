@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/Button'
 import { Card, CardBody } from '@/components/ui/Card'
@@ -14,25 +13,31 @@ const avatarUrl = (seed: string) =>
   `https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}&backgroundType=gradientLinear&backgroundColor=1e2a3f,101828`
 
 export function Login() {
-  const navigate = useNavigate()
   const login = useGuardianStore((s) => s.login)
   const loginWithFirebase = useGuardianStore((s) => s.loginWithFirebase)
   const [step, setStep] = useState<'auth' | 'avatar'>('auth')
   const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_SEEDS[0])
   const [uid, setUid] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
 
   const { GoogleAuthButton, user, error } = useGoogleAuth({ onSuccess: (user) => { setUid(user.uid); setStep('avatar'); } })
 
-  async function finishSetup() {
+  function finishSetup() {
+    setSubmitting(true)
     const finalAvatar = selectedAvatar === 'google' && user?.photoURL ? user.photoURL : avatarUrl(selectedAvatar)
-    if (isFirebaseConfigured && uid) {
-      await updateGuardianProfile(uid, { avatar: finalAvatar })
-      loginWithFirebase(uid)
+    const authenticatedUid = uid ?? user?.uid
+
+    if (isFirebaseConfigured && authenticatedUid) {
+      loginWithFirebase(authenticatedUid)
+      window.location.assign('/dashboard')
+      void updateGuardianProfile(authenticatedUid, { avatar: finalAvatar }).catch((error) => {
+        console.error('Could not save Guardian profile:', error)
+      })
     } else {
       useGuardianStore.setState((s: any) => ({ guardian: { ...s.guardian, avatar: finalAvatar } }))
       login()
+      window.location.assign('/dashboard')
     }
-    navigate('/dashboard')
   }
 
   return (
@@ -96,8 +101,8 @@ export function Login() {
                     </motion.button>
                   ))}
                 </div>
-                <Button variant="neon" size="lg" className="w-full" onClick={finishSetup}>
-                  Begin Guardian Duty
+                <Button variant="neon" size="lg" className="w-full" onClick={finishSetup} disabled={submitting}>
+                  {submitting ? 'Preparing your dashboard...' : 'Begin Guardian Duty'}
                 </Button>
               </>
             )}
