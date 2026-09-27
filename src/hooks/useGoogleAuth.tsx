@@ -9,6 +9,7 @@ import {
     GoogleAuthProvider,
     onAuthStateChanged,
     signInWithPopup,
+    type User,
 } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
@@ -19,7 +20,7 @@ const googleProvider = new GoogleAuthProvider();
 export default function useGoogleAuth(options?: { onSuccess?: (user: any) => void }) {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     const login = useGuardianStore((state) => state.login);

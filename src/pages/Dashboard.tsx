@@ -8,20 +8,17 @@ import { Chip } from '@/components/ui/Chip'
 import { LevelRing } from '@/components/gamification/LevelRing'
 import { StreakFlame } from '@/components/gamification/StreakFlame'
 import { MissionCard } from '@/components/gamification/MissionCard'
-import { IncidentMap } from '@/components/map/IncidentMap'
 import { AQITrendChart } from '@/components/charts/AQITrendChart'
 import { LeaderboardRow } from '@/components/gamification/LeaderboardRow'
 import { useGuardianStore } from '@/store/useGuardianStore'
-import { MAP_INCIDENTS, AQI_TREND, LEADERBOARD_GLOBAL, RECENT_REPORTS } from '@/lib/mockData'
+import { AQI_TREND, LEADERBOARD_GLOBAL, RECENT_REPORTS } from '@/lib/mockData'
 import { guardianRankLabel } from '@/lib/mockData'
-import { reputationLabel } from '@/lib/gamification'
 import useGoogleAuth from '@/hooks/useGoogleAuth'
 
 
 
 export function Dashboard() {
   const {user, loading}= useGoogleAuth()
-  console.log("The user: ", user)
   const guardian = useGuardianStore((s) => s.guardian)
   const dailyMissions = useGuardianStore((s) => s.dailyMissions)
   const progressMission = useGuardianStore((s) => s.progressMission)
@@ -43,7 +40,7 @@ export function Dashboard() {
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2">
                 <Chip tone="blue">{guardianRankLabel(guardian.level)}</Chip>
                 <Chip tone="neon">
-                  <img src={guardian.avatar} className="w-3 h-3 mr-1" /> {guardian.coins}
+                  <img src={guardian.avatar} className="w-3 h-3 mr-1" /> {guardian.ecoCoins}
                 </Chip>
                 <Chip>Global #{guardian.rankGlobal}</Chip>
               </div>

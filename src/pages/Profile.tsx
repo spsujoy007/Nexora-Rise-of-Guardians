@@ -34,7 +34,7 @@ export function Profile() {
           <LevelRing level={guardian.level} xp={guardian.xp} xpToNext={guardian.xpToNext} avatar={guardian.avatar} size={120} />
           <div className="flex-1 text-center sm:text-left">
             <h1 className="font-display text-2xl font-bold text-ice">{user?.displayName}</h1>
-            <p className="text-sm text-mist">{user?.email.split('@')[0]}.guardian</p>
+            <p className="text-sm text-mist">{user?.email?.split('@')[0] ?? guardian.handle.replace(/^@/, '')}.guardian</p>
             <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
               <Chip tone="blue">{guardianRankLabel(guardian.level)}</Chip>
               <Chip tone="neon">{reputationLabel(guardian.reputation)}</Chip>

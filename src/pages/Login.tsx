@@ -2,12 +2,11 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
-import { signInWithPopup } from 'firebase/auth'
 import { Button } from '@/components/ui/Button'
 import { Card, CardBody } from '@/components/ui/Card'
 import { useGuardianStore } from '@/store/useGuardianStore'
-import { auth, googleProvider, isFirebaseConfigured } from '@/lib/firebase'
-import { ensureGuardianDoc, updateGuardianProfile } from '@/lib/firestoreService'
+import { isFirebaseConfigured } from '@/lib/firebase'
+import { updateGuardianProfile } from '@/lib/firestoreService'
 import useGoogleAuth from '@/hooks/useGoogleAuth'
 const AVATAR_SEEDS = ['aarav', 'nova', 'orbit', 'zephyr', 'sable', 'kestrel', 'orion', 'lyra']
 

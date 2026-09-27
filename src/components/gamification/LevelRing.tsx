@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import { guardianRankLabel } from '@/lib/mockData'
-import useGoogleAuth from '@/hooks/useGoogleAuth'
 
 export function LevelRing({
   level,
@@ -18,7 +17,6 @@ export function LevelRing({
   const radius = size / 2 - 8
   const circumference = 2 * Math.PI * radius
   const pct = Math.min(1, xp / xpToNext)
-  const {user}= useGoogleAuth()
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>

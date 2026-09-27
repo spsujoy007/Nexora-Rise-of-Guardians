@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useGuardianStore } from '@/store/useGuardianStore'
 import { NotificationCenter } from '@/components/notifications/NotificationCenter'
 import { cn } from '@/lib/utils'
-import useGoogleAuth from '@/hooks/useGoogleAuth'
 
 const LINKS = [
   { to: '/dashboard', label: 'Dashboard' },
@@ -17,9 +16,6 @@ const LINKS = [
 ]
 
 export function Navbar() {
-
-  const {user, loading} = useGoogleAuth()
-
   const guardian = useGuardianStore((s) => s.guardian)
   const notifications = useGuardianStore((s) => s.notifications)
   const unread = notifications.filter((n) => !n.read).length
