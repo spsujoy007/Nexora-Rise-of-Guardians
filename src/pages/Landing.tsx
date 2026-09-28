@@ -117,7 +117,6 @@ export function Landing() {
 
       {/* Map + Mission preview */}
       <section className="max-w-7xl mx-auto px-6 py-16 ">
-        
         <div>
           <h2 className="font-display text-xl font-bold mb-4">Today's Operations</h2>
           <div className="space-y-3">
