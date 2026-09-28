@@ -116,11 +116,8 @@ export function Landing() {
       </section>
 
       {/* Map + Mission preview */}
-      <section className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-6">
-        <div>
-          <h2 className="font-display text-xl font-bold mb-4">Live Hotspot Map</h2>
-          <IncidentMap incidents={MAP_INCIDENTS} />
-        </div>
+      <section className="max-w-7xl mx-auto px-6 py-16 ">
+        
         <div>
           <h2 className="font-display text-xl font-bold mb-4">Today's Operations</h2>
           <div className="space-y-3">
