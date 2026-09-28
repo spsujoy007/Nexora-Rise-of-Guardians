@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardBody } from '@/components/ui/Card'
 import { LeaderboardPodium } from '@/components/gamification/LeaderboardPodium'
 import { MissionCard } from '@/components/gamification/MissionCard'
-import { IncidentMap } from '@/components/map/IncidentMap'
-import { LEADERBOARD_GLOBAL, MAP_INCIDENTS, DAILY_MISSIONS } from '@/lib/mockData'
+import { LEADERBOARD_GLOBAL, DAILY_MISSIONS } from '@/lib/mockData'
 import { formatNumber } from '@/lib/utils'
 
 const FEATURES = [
